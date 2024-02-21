@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dart_jts/dart_jts.dart';
 import 'package:perfect_freehand/perfect_freehand.dart' as pf;
-import 'log.dart';
 import 'stroke_point.dart';
 
 class Stroke {

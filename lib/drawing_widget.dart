@@ -29,13 +29,13 @@ class _DrawingWidgetState extends State<DrawingWidget> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         _state.setWidgetSize(constraints.maxWidth, constraints.maxHeight);
-        return LGestureDetector(
+        return MyGestureDetector(
+          onPointerDown: onPointerDown,
+          onPointerMove: onPointerMove,
+          onPointerUp: onPointerUp,
           onScaleStart: onScaleStart,
           onScaleUpdate: onScaleUpdate,
           onScaleEnd: onScaleEnd,
-          onMoveStart: onMoveStart,
-          onMoveUpdate: onMoveUpdate,
-          onMoveEnd: onMoveEnd,
           child: CustomPaint(
               painter: StrokePainter(_state),
           ),
@@ -48,29 +48,23 @@ class _DrawingWidgetState extends State<DrawingWidget> {
     return !stylusOnlyMode || (stylusOnlyMode && event.kind == ui.PointerDeviceKind.stylus);
   }
 
-  void onMoveStart(PointerMoveEvent event) {
+  void onPointerDown(PointerDownEvent event) {
     if (isDrawing(event)) {
       _state.currentStroke = Stroke();
       draw(StrokePoint.fromEvent(event));
-    } else {
-      pan(event.delta);
     }
   }
 
-  void onMoveUpdate(PointerMoveEvent event) {
+  void onPointerMove(PointerMoveEvent event) {
     if (isDrawing(event)) {
       draw(StrokePoint.fromEvent(event));
-    } else {
-      pan(event.delta);
     }
   }
 
-  void onMoveEnd(PointerEvent event) {
+  void onPointerUp(PointerUpEvent event) {
     if (isDrawing(event)) {
       draw(StrokePoint.fromEvent(event));
       _state.finishStroke();
-    } else {
-      pan(event.delta);
     }
   }
 
@@ -89,17 +83,18 @@ class _DrawingWidgetState extends State<DrawingWidget> {
     });
   }
 
-  void onScaleStart(Offset focalPoint) {
+  void onScaleStart(ScaleStartDetails details) {
+    final focalPoint = details.focalPoint;
     Log.d("onScaleStart $focalPoint}");
     _baseProjection = _state.projection?.copyWith();
     _basePivot = focalPoint;
   }
 
-  void onScaleUpdate(ScaleEvent event) {
+  void onScaleUpdate(ScaleUpdateDetails details) {
     Envelope viewport = _baseProjection!.viewport;
 
-    final scale = event.scale;
-    final pivot = event.focalPoint;
+    final scale = details.scale;
+    final pivot = details.focalPoint;
     Offset translate = pivot - _basePivot;
 
     viewport = viewport.translated(translate.dx, translate.dy);
@@ -110,7 +105,7 @@ class _DrawingWidgetState extends State<DrawingWidget> {
     });
   }
 
-  void onScaleEnd() {
+  void onScaleEnd(ScaleEndDetails details) {
     Log.d("onScaleEnd");
   }
 }
