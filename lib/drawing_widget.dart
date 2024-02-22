@@ -36,8 +36,10 @@ class _DrawingWidgetState extends State<DrawingWidget> {
           onScaleStart: onScaleStart,
           onScaleUpdate: onScaleUpdate,
           onScaleEnd: onScaleEnd,
+          behavior: HitTestBehavior.translucent,
           child: CustomPaint(
-              painter: StrokePainter(_state),
+            painter: StrokePainter(_state),
+            child: Container(),
           ),
         );
       },
@@ -45,7 +47,8 @@ class _DrawingWidgetState extends State<DrawingWidget> {
   }
 
   bool isDrawing(PointerEvent event) {
-    return !stylusOnlyMode || (stylusOnlyMode && event.kind == ui.PointerDeviceKind.stylus);
+    return !stylusOnlyMode ||
+        (stylusOnlyMode && event.kind == ui.PointerDeviceKind.stylus);
   }
 
   void onPointerDown(PointerDownEvent event) {
