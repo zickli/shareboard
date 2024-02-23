@@ -8,6 +8,8 @@ class Stroke {
 
   LinearRing? outline;
 
+  double strokeWidth = 10.0;
+
   Stroke();
 
   void append(StrokePoint point) {
@@ -19,7 +21,7 @@ class Stroke {
     final geometryFactory = GeometryFactory.defaultPrecision();
 
     List<pf.Point> pfPoints = points.map((sp) => pf.Point(sp.x, sp.y, sp.pressure)).toList();
-    List<pf.Point> pfOutline = pf.getStroke(pfPoints, simulatePressure: false);
+    List<pf.Point> pfOutline = pf.getStroke(pfPoints, size: strokeWidth, simulatePressure: false);
     List<Coordinate> coordinates = pfOutline.map((p) => Coordinate(p.x, p.y)).toList();
     coordinates.add(coordinates.first);
     LinearRing outline = geometryFactory.createLinearRing(coordinates);

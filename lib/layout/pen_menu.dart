@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:shareboard/toolbox_state.dart';
 
-class penMenu extends StatefulWidget {
-  const penMenu({super.key});
+class PenMenu extends StatefulWidget {
+  const PenMenu({super.key, required this.toolboxState});
+
+  final ToolboxState toolboxState;
 
   @override
-  State<penMenu> createState() => _penMenuState();
+  State<PenMenu> createState() => _PenMenuState();
 }
 
-class _penMenuState extends State<penMenu> {
-  double _sliderValue = 0.0;
-
+class _PenMenuState extends State<PenMenu> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 80,
-      child: Column(
+      child:
+      Column(
         children: [
           // thickness changer
           Container(
@@ -22,12 +24,12 @@ class _penMenuState extends State<penMenu> {
             height: 40,
             child: Slider(
               label: 'thickness',
-              value: _sliderValue,
-              min: 0.0,
-              max: 100.0,
+              value: widget.toolboxState.strokeWidth,
+              min: 10.0,
+              max: 50.0,
               onChanged: (value) {
                 setState(() {
-                  _sliderValue = value;
+                  widget.toolboxState.strokeWidth = value;
                 });
               },),
           ),
@@ -35,8 +37,8 @@ class _penMenuState extends State<penMenu> {
           Container(
             alignment: Alignment.center,
             height: 40,
-            child: Text('color changer'),
-          )
+            child: const Text('thickness changer'),
+          ),
         ],
       ),
     );

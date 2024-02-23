@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
 import 'package:dart_jts/dart_jts.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shareboard/toolbox_state.dart';
 import 'drawing_state.dart';
 import 'geometry/extensions.dart';
 import 'gesture_detector.dart';
@@ -22,10 +24,15 @@ class _DrawingWidgetState extends State<DrawingWidget> {
 
   bool stylusOnlyMode = false;
 
+  double strokeWidth = 10.0;
+
   final _state = DrawingState();
 
   @override
   Widget build(BuildContext context) {
+    final toolboxState = Provider.of<ToolboxState>(context, listen: false);
+    strokeWidth = toolboxState.strokeWidth;
+    _state.currentStroke?.strokeWidth = strokeWidth;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         _state.setWidgetSize(constraints.maxWidth, constraints.maxHeight);
@@ -54,6 +61,7 @@ class _DrawingWidgetState extends State<DrawingWidget> {
   void onPointerDown(PointerDownEvent event) {
     if (isDrawing(event)) {
       _state.currentStroke = Stroke();
+      _state.currentStroke?.strokeWidth = strokeWidth;
       draw(StrokePoint.fromEvent(event));
     }
   }

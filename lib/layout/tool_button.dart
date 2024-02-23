@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
 
-class toolButton extends StatelessWidget {
+class ToolButton extends StatelessWidget {
   final String imagePath;
   final double padding;
   final double width;
   final double height;
   final Widget? popup;
 
-  const toolButton({
+  const ToolButton({
     Key? key,
     required this.imagePath,
     required this.padding,

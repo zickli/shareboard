@@ -33,6 +33,7 @@ dependencies:
   logger: ^2.0.2+1
   dart_jts: ^0.3.0+1
   perfect_freehand: ^1.0.4
+  provider: ^6.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
