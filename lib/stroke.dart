@@ -10,6 +10,8 @@ class Stroke {
 
   double strokeWidth = 10.0;
 
+  Color strokeColor = Colors.black;
+
   Stroke();
 
   void append(StrokePoint point) {
@@ -29,7 +31,7 @@ class Stroke {
   }
 
   void drawOn(Canvas canvas) {
-    Paint paint = Paint() ..color = Colors.black;
+    Paint paint = Paint() ..color = strokeColor;
 
     final path = Path();
 

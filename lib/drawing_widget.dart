@@ -3,6 +3,7 @@ import 'package:dart_jts/dart_jts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareboard/toolbox_state.dart';
+import 'package:shareboard/utils/app_colors.dart';
 import 'drawing_state.dart';
 import 'geometry/extensions.dart';
 import 'gesture_detector.dart';
@@ -26,13 +27,17 @@ class _DrawingWidgetState extends State<DrawingWidget> {
 
   double strokeWidth = 10.0;
 
+  Color toolColor = AppColors.black;
+
   final _state = DrawingState();
 
   @override
   Widget build(BuildContext context) {
     final toolboxState = Provider.of<ToolboxState>(context, listen: false);
     strokeWidth = toolboxState.strokeWidth;
-    _state.currentStroke?.strokeWidth = strokeWidth;
+    toolColor = toolboxState.toolColor;
+    _state.currentStroke?.strokeWidth = toolboxState.strokeWidth;
+    _state.currentStroke?.strokeColor = toolboxState.toolColor;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         _state.setWidgetSize(constraints.maxWidth, constraints.maxHeight);
@@ -62,6 +67,7 @@ class _DrawingWidgetState extends State<DrawingWidget> {
     if (isDrawing(event)) {
       _state.currentStroke = Stroke();
       _state.currentStroke?.strokeWidth = strokeWidth;
+      _state.currentStroke?.strokeColor = toolColor;
       draw(StrokePoint.fromEvent(event));
     }
   }
